@@ -1,0 +1,1289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Add Two Numbers — LeetCode #2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --ink: #1c1917;
+  --ink-2: #44403c;
+  --ink-3: #78716c;
+  --ink-4: #a8a29e;
+  --paper: #fafaf9;
+  --surface: #ffffff;
+  --border: #e7e5e4;
+  --border-2: #d6d3d1;
+
+  --teal: #0d9488;
+  --teal-light: #ccfbf1;
+  --teal-dark: #0f766e;
+  --rose: #e11d48;
+  --rose-light: #ffe4e6;
+  --amber: #d97706;
+  --amber-light: #fef3c7;
+  --violet: #7c3aed;
+  --violet-light: #ede9fe;
+  --sky: #0284c7;
+  --sky-light: #e0f2fe;
+
+  --r: 10px;
+  --r-lg: 16px;
+  --serif: 'Lora', Georgia, serif;
+  --sans: 'Inter', system-ui, sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+  --measure: 660px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 18px;
+  line-height: 1.8;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── Layout ─── */
+.page { max-width: var(--measure); margin: 0 auto; padding: 0 24px 120px; }
+
+/* ─── Header ─── */
+.site-nav {
+  padding: 20px 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 64px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.site-nav .badge {
+  font-family: var(--mono);
+  font-size: 11px;
+  background: var(--rose-light);
+  color: var(--rose);
+  padding: 3px 9px;
+  border-radius: 99px;
+  font-weight: 500;
+}
+.site-nav .num {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--ink-4);
+}
+
+.hero { margin-bottom: 56px; }
+.hero h1 {
+  font-family: var(--serif);
+  font-size: clamp(36px, 6vw, 56px);
+  font-weight: 600;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  margin-bottom: 20px;
+  color: var(--ink);
+}
+.hero .lede {
+  font-family: var(--sans);
+  font-size: 17px;
+  color: var(--ink-3);
+  line-height: 1.65;
+  max-width: 520px;
+  margin-bottom: 28px;
+}
+.tags { display: flex; gap: 8px; flex-wrap: wrap; }
+.tag {
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: 4px 11px;
+  border-radius: 99px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+.tag-medium { background: var(--amber-light); color: var(--amber); }
+.tag-linked { background: var(--violet-light); color: var(--violet); }
+.tag-math { background: var(--sky-light); color: var(--sky); }
+
+/* ─── Typography ─── */
+h2 {
+  font-family: var(--serif);
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 1.25;
+  margin: 52px 0 16px;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+h3 {
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ink-3);
+  margin: 28px 0 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+p { color: var(--ink-2); margin-bottom: 18px; }
+p:last-child { margin-bottom: 0; }
+em { font-style: italic; color: var(--ink); }
+strong { font-weight: 600; color: var(--ink); font-style: normal; }
+code {
+  font-family: var(--mono);
+  font-size: 14px;
+  background: var(--violet-light);
+  color: var(--violet);
+  padding: 2px 6px;
+  border-radius: 5px;
+}
+.divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 48px 0;
+}
+a { color: var(--teal); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ─── Callout ─── */
+.callout {
+  border-left: 3px solid var(--teal);
+  padding: 16px 20px;
+  background: var(--teal-light);
+  border-radius: 0 var(--r) var(--r) 0;
+  margin: 28px 0;
+  font-family: var(--sans);
+  font-size: 15px;
+  color: var(--teal-dark);
+  line-height: 1.6;
+}
+
+/* ─── Widget shell ─── */
+.widget {
+  background: var(--surface);
+  border: 1px solid var(--border-2);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  margin: 32px 0;
+}
+.widget-bar {
+  background: var(--paper);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.widget-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-4);
+  letter-spacing: 0.05em;
+}
+.widget-body { padding: 28px 24px; }
+
+/* ─── Linked list rendering ─── */
+.ll-row {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+.ll-node {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+.ll-box {
+  width: 52px;
+  height: 52px;
+  border: 2px solid var(--border-2);
+  border-radius: var(--r);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface);
+  font-family: var(--mono);
+  transition: background 0.2s, border-color 0.2s, transform 0.2s;
+  position: relative;
+  flex-shrink: 0;
+}
+.ll-box .val {
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--ink);
+  transition: color 0.2s;
+}
+.ll-box .ptr {
+  font-size: 9px;
+  color: var(--ink-4);
+  font-family: var(--mono);
+  margin-top: 2px;
+}
+.ll-arrow {
+  width: 28px;
+  height: 2px;
+  background: var(--border-2);
+  position: relative;
+  flex-shrink: 0;
+}
+.ll-arrow::after {
+  content: '';
+  position: absolute;
+  right: -1px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  border-left: 6px solid var(--border-2);
+}
+.ll-null {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-4);
+  padding-left: 6px;
+  flex-shrink: 0;
+}
+
+/* Node states */
+.ll-box.active {
+  border-color: var(--teal);
+  background: var(--teal-light);
+  transform: translateY(-3px);
+}
+.ll-box.active .val { color: var(--teal-dark); }
+.ll-box.result-node {
+  border-color: var(--violet);
+  background: var(--violet-light);
+}
+.ll-box.result-node .val { color: var(--violet); }
+.ll-box.carry-glow {
+  border-color: var(--amber);
+  background: var(--amber-light);
+}
+.ll-box.carry-glow .val { color: var(--amber); }
+.ll-box.done-node {
+  border-color: var(--teal);
+  background: var(--teal-light);
+  opacity: 0.5;
+}
+.ll-box.done-node .val { color: var(--teal-dark); }
+
+/* Label above row */
+.ll-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-4);
+  margin-bottom: 8px;
+  letter-spacing: 0.05em;
+}
+
+/* ─── Addition column viz ─── */
+.col-grid {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin: 20px 0;
+  flex-wrap: wrap;
+}
+.col-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  min-width: 80px;
+}
+.col-card .col-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--ink-4);
+  letter-spacing: 0.06em;
+}
+.col-card .col-digits {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.digit-box {
+  width: 48px;
+  height: 48px;
+  border: 1.5px solid var(--border-2);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: 20px;
+  font-weight: 500;
+  background: var(--surface);
+  color: var(--ink);
+  transition: all 0.25s;
+}
+.digit-box.d-teal { background: var(--teal-light); border-color: var(--teal); color: var(--teal-dark); }
+.digit-box.d-rose { background: var(--rose-light); border-color: var(--rose); color: var(--rose); }
+.digit-box.d-violet { background: var(--violet-light); border-color: var(--violet); color: var(--violet); }
+.digit-box.d-amber { background: var(--amber-light); border-color: var(--amber); color: var(--amber); }
+.col-plus { font-family: var(--mono); font-size: 18px; color: var(--ink-3); }
+.col-line { width: 48px; height: 1.5px; background: var(--border-2); }
+.digit-box.empty { background: var(--paper); border-style: dashed; color: var(--ink-4); }
+
+/* ─── Step controls ─── */
+.step-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+.btn {
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 8px 18px;
+  border-radius: 8px;
+  border: 1.5px solid var(--border-2);
+  cursor: pointer;
+  background: var(--surface);
+  color: var(--ink);
+  transition: all 0.15s;
+  line-height: 1;
+}
+.btn:hover { border-color: var(--teal); color: var(--teal); background: var(--teal-light); }
+.btn:active { transform: scale(0.97); }
+.btn:disabled { opacity: 0.35; cursor: not-allowed; pointer-events: none; }
+.btn-primary { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.btn-primary:hover { background: var(--ink-2); border-color: var(--ink-2); color: var(--paper); }
+.step-dot {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--ink-4);
+  margin-left: auto;
+}
+
+/* ─── Explanation log ─── */
+.log-box {
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 14px 18px;
+  font-family: var(--sans);
+  font-size: 14px;
+  color: var(--ink-3);
+  line-height: 1.6;
+  min-height: 52px;
+  margin: 16px 0;
+  transition: all 0.2s;
+}
+.log-box b { color: var(--ink); font-weight: 500; }
+.log-box .eq { color: var(--teal-dark); font-family: var(--mono); font-weight: 500; font-size: 15px; }
+.log-box .carry-note { color: var(--amber); font-family: var(--mono); }
+.log-box .found { color: var(--teal); }
+
+/* ─── Carry bubble ─── */
+.carry-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 12px 0;
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--ink-3);
+}
+.carry-bubble {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid var(--amber);
+  background: var(--amber-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--amber);
+  transition: all 0.3s;
+  font-family: var(--mono);
+}
+.carry-bubble.zero { border-color: var(--border-2); background: var(--paper); color: var(--ink-4); }
+
+/* ─── Schoolmath viz ─── */
+.school-math {
+  font-family: var(--mono);
+  font-size: 22px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 24px 28px;
+  margin: 24px 0;
+  display: inline-block;
+  min-width: 240px;
+  line-height: 2.2;
+}
+.school-math .row { display: flex; gap: 0; align-items: center; }
+.school-math .op { color: var(--ink-3); width: 28px; }
+.school-math .digit { width: 36px; text-align: center; }
+.school-math .carry-digit { font-size: 13px; color: var(--amber); min-height: 22px; }
+.school-math .line { border-top: 2px solid var(--ink); margin: 4px 0; }
+.school-math .result-digit { color: var(--teal-dark); }
+
+/* ─── Code block ─── */
+.code-wrap {
+  background: #1c1917;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  margin: 28px 0;
+  font-family: var(--mono);
+  font-size: 13.5px;
+  line-height: 1.75;
+}
+.code-top {
+  padding: 12px 18px;
+  background: #141412;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.code-lang { font-size: 11px; color: #57534e; letter-spacing: 0.07em; font-family: var(--mono); }
+.copy-btn {
+  font-size: 11px; color: #57534e; background: none; border: none;
+  cursor: pointer; padding: 2px 6px; border-radius: 4px;
+  font-family: var(--mono); transition: color 0.15s;
+}
+.copy-btn:hover { color: #d6d3d1; background: rgba(255,255,255,0.07); }
+pre { padding: 20px 20px; overflow-x: auto; color: #d6d3d1; margin: 0; }
+.kw { color: #c084fc; }
+.fn { color: #67e8f9; }
+.cm { color: #57534e; font-style: italic; }
+.nm { color: #fb923c; }
+.cls { color: #f0abfc; }
+.op { color: #94a3b8; }
+
+/* ─── Try it ─── */
+.try-wrap {
+  border: 1px solid var(--border-2);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  margin: 28px 0;
+}
+.try-inputs {
+  padding: 20px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+.try-inputs label {
+  font-family: var(--sans);
+  font-size: 13px;
+  color: var(--ink-3);
+  display: block;
+  margin-bottom: 6px;
+  margin-top: 12px;
+}
+.try-inputs label:first-child { margin-top: 0; }
+.try-inputs input {
+  font-family: var(--mono);
+  font-size: 14px;
+  width: 100%;
+  padding: 9px 14px;
+  border: 1.5px solid var(--border-2);
+  border-radius: 8px;
+  background: var(--paper);
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.15s;
+}
+.try-inputs input:focus { border-color: var(--teal); }
+.try-output {
+  padding: 16px 20px;
+  background: var(--paper);
+  font-family: var(--mono);
+  font-size: 14px;
+  min-height: 52px;
+  color: var(--ink-3);
+}
+.try-output .res { color: var(--teal-dark); font-weight: 500; }
+.try-output .err { color: var(--rose); }
+.try-btn-row { padding: 0 20px 16px; background: var(--surface); border-bottom: 1px solid var(--border); }
+
+/* ─── Complexity ─── */
+.complexity-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin: 20px 0;
+}
+.c-card {
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 18px;
+  background: var(--surface);
+}
+.c-card .label { font-family: var(--mono); font-size: 11px; color: var(--ink-4); margin-bottom: 6px; }
+.c-card .value { font-family: var(--mono); font-size: 26px; font-weight: 500; color: var(--teal); line-height: 1; }
+.c-card .desc { font-family: var(--sans); font-size: 13px; color: var(--ink-3); margin-top: 8px; line-height: 1.5; }
+
+/* ─── Footer ─── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 32px 0;
+  text-align: center;
+  font-family: var(--sans);
+  font-size: 13px;
+  color: var(--ink-4);
+  margin-top: 24px;
+}
+footer a { color: var(--teal); }
+
+/* ─── Pulse animation ─── */
+@keyframes pulse {
+  0%, 100% { transform: translateY(-3px) scale(1); }
+  50% { transform: translateY(-5px) scale(1.05); }
+}
+.ll-box.active { animation: pulse 1s ease-in-out infinite; }
+
+@keyframes pop {
+  from { transform: scale(0.7); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+.pop { animation: pop 0.25s ease forwards; }
+
+/* ─── Highlight bar ─── */
+.highlight-step {
+  background: var(--teal-light);
+  border-left: 3px solid var(--teal);
+  padding: 10px 14px;
+  border-radius: 0 6px 6px 0;
+  font-family: var(--sans);
+  font-size: 14px;
+  color: var(--teal-dark);
+  margin: 10px 0;
+}
+
+@media (max-width: 560px) {
+  .complexity-grid { grid-template-columns: 1fr; }
+  .ll-box { width: 44px; height: 44px; }
+  .ll-box .val { font-size: 16px; }
+  .ll-arrow { width: 18px; }
+  .widget-body { padding: 20px 16px; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <nav class="site-nav">
+    <span class="num">LeetCode #2</span>
+    <span class="badge">Medium</span>
+  </nav>
+
+  <header class="hero">
+    <h1>Add Two Numbers</h1>
+    <p class="lede">Two numbers are hiding inside linked lists — written backwards, one digit per node. Your job: add them up without ever converting to integers.</p>
+    <div class="tags">
+      <span class="tag tag-medium">Medium</span>
+      <span class="tag tag-linked">Linked List</span>
+      <span class="tag tag-math">Math</span>
+    </div>
+  </header>
+
+  <!-- ── Section 1: The Problem ── -->
+  <h2>What are we actually dealing with?</h2>
+
+  <p>You're given two <em>non-empty linked lists</em> representing two non-negative integers. The digits are stored in <strong>reverse order</strong> — the 1s digit comes first.</p>
+
+  <p>For example, the number <strong>342</strong> is stored as the list <code>2 → 4 → 3</code>. The number <strong>465</strong> is stored as <code>5 → 6 → 4</code>. Your task is to add them and return the result as a linked list — also in reverse.</p>
+
+  <div class="widget">
+    <div class="widget-bar">
+      <span class="widget-label">the setup</span>
+    </div>
+    <div class="widget-body">
+      <div id="setup-l1-label" class="ll-label">l1 — represents 342</div>
+      <div class="ll-row" id="setup-l1"></div>
+      <div style="height:20px"></div>
+      <div id="setup-l2-label" class="ll-label">l2 — represents 465</div>
+      <div class="ll-row" id="setup-l2"></div>
+      <div style="height:20px"></div>
+      <div class="ll-label">result — should represent 807</div>
+      <div class="ll-row" id="setup-result"></div>
+    </div>
+  </div>
+
+  <p>Notice the twist: because the lists are reversed, <strong>the 1s digit is at the front</strong>. That's actually a gift — it means we can walk both lists from left to right and add column by column, just like elementary school addition.</p>
+
+  <hr class="divider">
+
+  <!-- ── Section 2: The Analogy ── -->
+  <h2>Think back to grade school</h2>
+
+  <p>Remember how you add numbers on paper? You line them up, start from the right, and add each column. If the sum is 10 or more, you <em>carry</em> the extra 1 to the next column.</p>
+
+  <div class="widget">
+    <div class="widget-bar">
+      <span class="widget-label">long addition — 342 + 465</span>
+    </div>
+    <div class="widget-body" style="display:flex; justify-content:center;">
+      <div class="school-math">
+        <div class="row">
+          <span class="op"></span>
+          <span class="digit carry-digit" id="carry-0">&nbsp;</span>
+          <span class="digit carry-digit" id="carry-1">&nbsp;</span>
+          <span class="digit carry-digit" id="carry-2">&nbsp;</span>
+        </div>
+        <div class="row">
+          <span class="op"></span>
+          <span class="digit" id="sd-a0">3</span>
+          <span class="digit" id="sd-a1">4</span>
+          <span class="digit" id="sd-a2">2</span>
+        </div>
+        <div class="row">
+          <span class="op">+</span>
+          <span class="digit" id="sd-b0">4</span>
+          <span class="digit" id="sd-b1">6</span>
+          <span class="digit" id="sd-b2">5</span>
+        </div>
+        <div class="line" style="grid-column:1/-1; width:calc(36px * 3 + 28px)"></div>
+        <div class="row">
+          <span class="op"></span>
+          <span class="digit result-digit" id="sd-r0">?</span>
+          <span class="digit result-digit" id="sd-r1">?</span>
+          <span class="digit result-digit" id="sd-r2">?</span>
+        </div>
+      </div>
+    </div>
+    <div class="widget-body" style="padding-top:0">
+      <p style="font-size:15px; font-family:var(--sans); color:var(--ink-3); text-align:center; margin-bottom:16px;">Step through the addition column by column.</p>
+      <div class="step-controls" style="justify-content:center;">
+        <button class="btn" id="sm-prev" onclick="smPrev()" disabled>← Prev</button>
+        <button class="btn btn-primary" id="sm-next" onclick="smNext()">Next column →</button>
+        <button class="btn" onclick="smReset()">Reset</button>
+      </div>
+      <div class="log-box" id="sm-log" style="margin-top:16px;">We'll add 342 + 465 one column at a time. Columns go right-to-left in normal addition, but notice — our linked lists give us the digits <em>right-to-left already</em>, so we go left-to-right!</div>
+    </div>
+  </div>
+
+  <p>That last point is the key insight. In a linked list, we <em>always</em> start at the head. Since the digits are stored in reverse, the head gives us the 1s digit — exactly where normal addition starts. <strong>Reversed order is actually the helpful order.</strong></p>
+
+  <hr class="divider">
+
+  <!-- ── Section 3: The Algorithm ── -->
+  <h2>Walking through the algorithm</h2>
+
+  <p>Here's the full procedure in plain English before we look at code:</p>
+
+  <div class="callout">
+    Use two pointers — one per list — and walk them forward in lockstep. At each step, add <code>p1.val + p2.val + carry</code>. The 1s digit of the result becomes a new node; the 10s digit (0 or 1) becomes the carry for the next step.
+  </div>
+
+  <p>The carry can only ever be <code>0</code> or <code>1</code>, because the max possible sum at any step is <code>9 + 9 + 1 = 19</code> — and <code>19 / 10 = 1</code> remainder <code>9</code>.</p>
+
+  <p>One edge case: after both lists are exhausted, the carry might still be <code>1</code>. If so, create one final node with value <code>1</code>. Example: <code>999 + 1 = 1000</code> — four digits from two three-digit numbers.</p>
+
+  <!-- ── INTERACTIVE STEP-THROUGH ── -->
+  <div class="widget">
+    <div class="widget-bar">
+      <span class="widget-label">interactive — step through [2→4→3] + [5→6→4]</span>
+      <span class="step-dot" id="main-step-dot">step 0 / 4</span>
+    </div>
+    <div class="widget-body">
+
+      <!-- L1 row -->
+      <div class="ll-label">l1</div>
+      <div class="ll-row" id="main-l1" style="margin-bottom:20px;"></div>
+
+      <!-- L2 row -->
+      <div class="ll-label">l2</div>
+      <div class="ll-row" id="main-l2" style="margin-bottom:20px;"></div>
+
+      <!-- Carry -->
+      <div class="carry-row">
+        <div class="carry-bubble zero" id="carry-bubble">0</div>
+        <span id="carry-label" style="font-family:var(--sans); font-size:13px; color:var(--ink-3);">carry = 0</span>
+      </div>
+
+      <!-- Column addition visual -->
+      <div class="col-grid" id="col-grid-main" style="margin-top:16px; min-height:150px;"></div>
+
+      <!-- Log -->
+      <div class="log-box" id="main-log">Press <strong>Next step</strong> to begin walking through the addition.</div>
+
+      <!-- Result so far -->
+      <div class="ll-label" style="margin-top:8px;">result so far</div>
+      <div class="ll-row" id="main-result"></div>
+
+      <!-- Controls -->
+      <div class="step-controls">
+        <button class="btn" id="main-prev" onclick="mainPrev()" disabled>← Prev</button>
+        <button class="btn btn-primary" id="main-next" onclick="mainNext()">Next step →</button>
+        <button class="btn" onclick="mainReset()">Reset</button>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ── Section 4: Edge Cases ── -->
+  <h2>Edge cases to watch for</h2>
+
+  <h3>Lists of different lengths</h3>
+  <p>What if one list runs out before the other? Just treat the missing digit as <code>0</code>. The loop continues until <em>both</em> pointers are <code>null</code> and carry is <code>0</code>.</p>
+
+  <h3>Leftover carry at the end</h3>
+  <p>Adding <code>999 + 1</code> gives <code>1000</code> — but after processing all nodes, your carry is <code>1</code> with no nodes left. Don't forget to create that final node.</p>
+
+  <!-- EDGE CASE MINI DEMO -->
+  <div class="widget">
+    <div class="widget-bar">
+      <span class="widget-label">edge case — [9→9→9] + [1] = 0→0→0→1 (i.e. 1000)</span>
+      <span class="step-dot" id="edge-step-dot">step 0 / 5</span>
+    </div>
+    <div class="widget-body">
+      <div class="ll-label">l1</div>
+      <div class="ll-row" id="edge-l1" style="margin-bottom:20px;"></div>
+      <div class="ll-label">l2</div>
+      <div class="ll-row" id="edge-l2" style="margin-bottom:20px;"></div>
+      <div class="carry-row">
+        <div class="carry-bubble zero" id="edge-carry-bubble">0</div>
+        <span id="edge-carry-label" style="font-family:var(--sans); font-size:13px; color:var(--ink-3);">carry = 0</span>
+      </div>
+      <div class="log-box" id="edge-log">This example shows what happens when carry outlives both lists.</div>
+      <div class="ll-label" style="margin-top:8px;">result so far</div>
+      <div class="ll-row" id="edge-result"></div>
+      <div class="step-controls">
+        <button class="btn" id="edge-prev" onclick="edgePrev()" disabled>← Prev</button>
+        <button class="btn btn-primary" id="edge-next" onclick="edgeNext()">Next step →</button>
+        <button class="btn" onclick="edgeReset()">Reset</button>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ── Section 5: Code ── -->
+  <h2>The solution</h2>
+
+  <p>The code is a direct translation of everything above. A dummy head node keeps things clean — we never have to special-case the first node.</p>
+
+  <div class="code-wrap">
+    <div class="code-top">
+      <span class="code-lang">PYTHON</span>
+      <button class="copy-btn" onclick="copyCode()">copy</button>
+    </div>
+    <pre id="code-el"><span class="kw">class</span> <span class="cls">ListNode</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(self, val=<span class="nm">0</span>, next=<span class="kw">None</span>):
+        self.val = val
+        self.next = next
+
+<span class="kw">def</span> <span class="fn">addTwoNumbers</span>(l1: ListNode, l2: ListNode) -> ListNode:
+    dummy = <span class="cls">ListNode</span>()   <span class="cm"># placeholder head</span>
+    curr  = dummy
+    carry = <span class="nm">0</span>
+
+    <span class="kw">while</span> l1 <span class="kw">or</span> l2 <span class="kw">or</span> carry:
+        v1 = l1.val <span class="kw">if</span> l1 <span class="kw">else</span> <span class="nm">0</span>   <span class="cm"># treat exhausted list as 0</span>
+        v2 = l2.val <span class="kw">if</span> l2 <span class="kw">else</span> <span class="nm">0</span>
+
+        total = v1 + v2 + carry
+        carry = total <span class="op">//</span> <span class="nm">10</span>          <span class="cm"># 0 or 1</span>
+        digit = total <span class="op">%</span>  <span class="nm">10</span>          <span class="cm"># the digit we keep</span>
+
+        curr.next = <span class="cls">ListNode</span>(digit)
+        curr = curr.next
+
+        <span class="kw">if</span> l1: l1 = l1.next
+        <span class="kw">if</span> l2: l2 = l2.next
+
+    <span class="kw">return</span> dummy.next</pre>
+  </div>
+
+  <h3>Why a dummy head?</h3>
+  <p>Without the dummy node, you'd need an <code>if result is None: result = ListNode(digit)</code> check on the first iteration. The dummy node lets every iteration look identical — just <code>curr.next = ListNode(digit)</code>. At the end we return <code>dummy.next</code> to skip the placeholder.</p>
+
+  <hr class="divider">
+
+  <!-- ── Section 6: Complexity ── -->
+  <h2>Complexity analysis</h2>
+
+  <div class="complexity-grid">
+    <div class="c-card">
+      <div class="label">time complexity</div>
+      <div class="value">O(n)</div>
+      <div class="desc">We visit each node at most once. <em>n</em> = length of the longer list.</div>
+    </div>
+    <div class="c-card">
+      <div class="label">space complexity</div>
+      <div class="value">O(n)</div>
+      <div class="desc">The result list is at most <em>n+1</em> nodes long (the extra 1 for a final carry).</div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ── Section 7: Try it ── -->
+  <h2>Try it yourself</h2>
+  <p>Enter comma-separated digits for each list. Remember: they're stored in reverse, so enter them that way — <code>2, 4, 3</code> represents 342.</p>
+
+  <div class="try-wrap">
+    <div class="try-inputs">
+      <label>l1 (comma-separated digits in reverse)</label>
+      <input id="t-l1" type="text" value="2, 4, 3" placeholder="2, 4, 3">
+      <label>l2 (comma-separated digits in reverse)</label>
+      <input id="t-l2" type="text" value="5, 6, 4" placeholder="5, 6, 4">
+    </div>
+    <div class="try-btn-row" style="padding-top:12px;">
+      <button class="btn btn-primary" onclick="runTry()">Add them →</button>
+    </div>
+    <div class="try-output" id="try-out">Result will appear here.</div>
+  </div>
+
+  <footer>
+    An interactive explainer for <a href="https://leetcode.com/problems/add-two-numbers/" target="_blank">LeetCode #2 — Add Two Numbers</a>.
+  </footer>
+
+</div><!-- /page -->
+
+<script>
+// ═══════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════
+function makeLLRow(values, activeIdx, doneUpTo, resultStyle) {
+  const frag = document.createDocumentFragment();
+  values.forEach((v, i) => {
+    const node = document.createElement('div');
+    node.className = 'll-node';
+
+    const box = document.createElement('div');
+    let cls = 'll-box';
+    if (resultStyle) cls += ' result-node';
+    else if (i === activeIdx) cls += ' active';
+    else if (doneUpTo !== undefined && i < doneUpTo) cls += ' done-node';
+    box.className = cls;
+
+    const val = document.createElement('div');
+    val.className = 'val';
+    val.textContent = v === null ? 'null' : v;
+    box.appendChild(val);
+    node.appendChild(box);
+
+    if (i < values.length - 1) {
+      const arrow = document.createElement('div');
+      arrow.className = 'll-arrow';
+      node.appendChild(arrow);
+    }
+    frag.appendChild(node);
+  });
+  const nullEl = document.createElement('div');
+  nullEl.className = 'll-arrow';
+  const nullLabel = document.createElement('span');
+  nullLabel.className = 'll-null';
+  nullLabel.textContent = 'null';
+  const nullNode = document.createElement('div');
+  nullNode.className = 'll-node';
+  nullNode.appendChild(nullEl);
+  nullNode.appendChild(nullLabel);
+  frag.appendChild(nullNode);
+  return frag;
+}
+
+function renderLL(id, values, activeIdx, doneUpTo, resultStyle) {
+  const el = document.getElementById(id);
+  el.innerHTML = '';
+  el.appendChild(makeLLRow(values, activeIdx, doneUpTo, resultStyle));
+}
+
+// ═══════════════════════════════════
+// SETUP VIZ (static)
+// ═══════════════════════════════════
+function initSetup() {
+  renderLL('setup-l1', [2, 4, 3]);
+  renderLL('setup-l2', [5, 6, 4]);
+  renderLL('setup-result', [7, 0, 8], undefined, undefined, true);
+}
+
+// ═══════════════════════════════════
+// SCHOOL MATH VIZ
+// ═══════════════════════════════════
+// Normal order: hundreds, tens, ones = indices 0,1,2 = 3,4,2 and 4,6,5
+// But we show right-to-left: col 0 = ones (rightmost), col 1 = tens, col 2 = hundreds
+// Display grid is left-to-right as hundreds, tens, ones
+const SM_STEPS = [
+  {
+    col: 2, // ones column (rightmost display)
+    carry_in: 0, a: 2, b: 5, sum: 7, carry_out: 0,
+    result: [null, null, 7],
+    carries: [null, null, null],
+    log: `<b>Ones column:</b> <span class="eq">2 + 5 = 7</span>. Sum is less than 10, so no carry. Write <b>7</b>.`
+  },
+  {
+    col: 1, // tens column
+    carry_in: 0, a: 4, b: 6, sum: 10, carry_out: 1,
+    result: [null, 0, 7],
+    carries: [null, 1, null],
+    log: `<b>Tens column:</b> <span class="eq">4 + 6 = 10</span>. Sum ≥ 10, so write <b>0</b> and carry the <span class="carry-note">1</span> to the next column.`
+  },
+  {
+    col: 0, // hundreds column
+    carry_in: 1, a: 3, b: 4, sum: 8, carry_out: 0,
+    result: [8, 0, 7],
+    carries: [null, 1, null],
+    log: `<b>Hundreds column:</b> <span class="eq">3 + 4 + <span class="carry-note">1</span> (carry) = 8</span>. No carry. Write <b>8</b>. Done!`
+  },
+  {
+    col: -1,
+    result: [8, 0, 7],
+    carries: [null, 1, null],
+    log: `<span class="found">342 + 465 = 807 ✓</span>  In our linked lists, that's <b>7 → 0 → 8</b> (stored reversed). Notice we processed the <em>ones digit first</em> — which is exactly what walking a linked list left-to-right gives us!`
+  }
+];
+
+let smStep = -1;
+const SM_COLS = ['sd-a0','sd-a1','sd-a2'];
+const SM_BCOLS = ['sd-b0','sd-b1','sd-b2'];
+const SM_RCOLS = ['sd-r0','sd-r1','sd-r2'];
+const SM_CCOLS = ['carry-0','carry-1','carry-2'];
+
+function smRenderStep(s) {
+  // Reset highlights
+  [0,1,2].forEach(i => {
+    document.getElementById(SM_COLS[i]).style.background = '';
+    document.getElementById(SM_BCOLS[i]).style.background = '';
+    document.getElementById(SM_COLS[i]).style.color = '';
+    document.getElementById(SM_BCOLS[i]).style.color = '';
+  });
+  // Highlight active col
+  if (s.col >= 0) {
+    const ac = SM_COLS[s.col];
+    const bc = SM_BCOLS[s.col];
+    document.getElementById(ac).style.background = '#ccfbf1';
+    document.getElementById(ac).style.color = '#0f766e';
+    document.getElementById(bc).style.background = '#ccfbf1';
+    document.getElementById(bc).style.color = '#0f766e';
+  }
+  // Result digits
+  s.result.forEach((v, i) => {
+    document.getElementById(SM_RCOLS[i]).textContent = v === null ? '?' : v;
+  });
+  // Carry digits
+  s.carries.forEach((v, i) => {
+    document.getElementById(SM_CCOLS[i]).innerHTML = v === null ? '&nbsp;' : `<span style="color:var(--amber)">${v}</span>`;
+  });
+  document.getElementById('sm-log').innerHTML = s.log;
+  document.getElementById('sm-prev').disabled = smStep <= 0;
+  document.getElementById('sm-next').disabled = smStep >= SM_STEPS.length - 1;
+}
+
+function smNext() {
+  if (smStep < SM_STEPS.length - 1) { smStep++; smRenderStep(SM_STEPS[smStep]); }
+}
+function smPrev() {
+  if (smStep > 0) { smStep--; smRenderStep(SM_STEPS[smStep]); }
+  else { smStep = -1; smResetDisplay(); }
+}
+function smReset() {
+  smStep = -1; smResetDisplay();
+}
+function smResetDisplay() {
+  [0,1,2].forEach(i => {
+    document.getElementById(SM_COLS[i]).style.background = '';
+    document.getElementById(SM_COLS[i]).style.color = '';
+    document.getElementById(SM_BCOLS[i]).style.background = '';
+    document.getElementById(SM_BCOLS[i]).style.color = '';
+    document.getElementById(SM_RCOLS[i]).textContent = '?';
+    document.getElementById(SM_CCOLS[i]).innerHTML = '&nbsp;';
+  });
+  document.getElementById('sm-log').innerHTML = `We'll add 342 + 465 one column at a time. Columns go right-to-left in normal addition, but notice — our linked lists give us the digits <em>right-to-left already</em>, so we go left-to-right!`;
+  document.getElementById('sm-prev').disabled = true;
+  document.getElementById('sm-next').disabled = false;
+}
+
+// ═══════════════════════════════════
+// MAIN INTERACTIVE DEMO
+// ═══════════════════════════════════
+// l1 = [2,4,3] = 342, l2 = [5,6,4] = 465
+// Steps: start, step0(2+5=7), step1(4+6+0=10), step2(3+4+1=8), done
+const MAIN_L1 = [2, 4, 3];
+const MAIN_L2 = [5, 6, 4];
+
+function buildMainSteps() {
+  const steps = [];
+  let carry = 0;
+  const result = [];
+
+  steps.push({
+    l1idx: 0, l2idx: 0, carry: 0,
+    result: [],
+    col: null,
+    log: `We start at the head of both lists. Pointer 1 = <b>${MAIN_L1[0]}</b>, Pointer 2 = <b>${MAIN_L2[0]}</b>. Carry starts at <b>0</b>.`
+  });
+
+  for (let i = 0; i < Math.max(MAIN_L1.length, MAIN_L2.length); i++) {
+    const v1 = i < MAIN_L1.length ? MAIN_L1[i] : 0;
+    const v2 = i < MAIN_L2.length ? MAIN_L2[i] : 0;
+    const total = v1 + v2 + carry;
+    const digit = total % 10;
+    const newCarry = Math.floor(total / 10);
+    result.push(digit);
+
+    steps.push({
+      l1idx: i, l2idx: i, carry,
+      result: [...result],
+      col: { v1, v2, carry, total, digit, newCarry },
+      log: newCarry > 0
+        ? `<span class="eq">${v1} + ${v2}${carry ? ' + <span style="color:var(--amber)">' + carry + '</span> (carry)' : ''} = ${total}</span>. Sum ≥ 10: write <b>${digit}</b>, carry <span style="color:var(--amber);font-weight:500">1</span> forward.`
+        : `<span class="eq">${v1} + ${v2}${carry ? ' + <span style="color:var(--amber)">' + carry + '</span> (carry)' : ''} = ${total}</span>. Sum &lt; 10: write <b>${digit}</b>, carry is <b>0</b>.`
+    });
+    carry = newCarry;
+  }
+
+  steps.push({
+    l1idx: -1, l2idx: -1, carry: 0,
+    result: [...result],
+    col: null,
+    done: true,
+    log: `<span class="found">Both lists exhausted, carry = 0. Done! Result: [${result.join(' → ')}] which represents ${parseInt(result.slice().reverse().join(''))}. ✓</span>`
+  });
+
+  return steps;
+}
+
+const MAIN_STEPS = buildMainSteps();
+let mainStep = 0;
+
+function renderMainStep(idx) {
+  const s = MAIN_STEPS[idx];
+
+  // Render L1
+  renderLL('main-l1', MAIN_L1, s.done ? undefined : s.l1idx, s.l1idx);
+  renderLL('main-l2', MAIN_L2, s.done ? undefined : s.l2idx, s.l2idx);
+
+  // Carry bubble
+  const cb = document.getElementById('carry-bubble');
+  const cl = document.getElementById('carry-label');
+  cb.textContent = s.carry;
+  cb.className = 'carry-bubble' + (s.carry === 0 ? ' zero' : '');
+  cl.textContent = `carry = ${s.carry}`;
+
+  // Column grid
+  const cg = document.getElementById('col-grid-main');
+  cg.innerHTML = '';
+  if (s.col) {
+    const { v1, v2, carry: c, total, digit, newCarry } = s.col;
+    cg.innerHTML = `
+      <div class="col-card">
+        <div class="col-label">from l1</div>
+        <div class="digit-box d-teal">${v1}</div>
+      </div>
+      <div class="col-card" style="justify-content:flex-end; padding-bottom:0px;">
+        <div class="col-plus">+</div>
+      </div>
+      <div class="col-card">
+        <div class="col-label">from l2</div>
+        <div class="digit-box d-rose">${v2}</div>
+      </div>
+      ${c > 0 ? `
+      <div class="col-card" style="justify-content:flex-end; padding-bottom:0px;">
+        <div class="col-plus">+</div>
+      </div>
+      <div class="col-card">
+        <div class="col-label">carry in</div>
+        <div class="digit-box d-amber">${c}</div>
+      </div>` : ''}
+      <div class="col-card" style="justify-content:flex-end; padding-bottom:0px;">
+        <div class="col-plus">=</div>
+      </div>
+      <div class="col-card">
+        <div class="col-label">sum</div>
+        <div class="digit-box" style="font-size:18px; color:var(--ink)">${total}</div>
+      </div>
+      <div style="width:100%; border-top:1.5px solid var(--border-2); margin:4px 0;"></div>
+      <div class="col-card">
+        <div class="col-label">write digit</div>
+        <div class="digit-box d-violet">${digit}</div>
+      </div>
+      ${newCarry > 0 ? `
+      <div class="col-card">
+        <div class="col-label">carry out</div>
+        <div class="digit-box d-amber">${newCarry}</div>
+      </div>` : ''}
+    `;
+  } else {
+    cg.innerHTML = `<div style="font-family:var(--sans); font-size:14px; color:var(--ink-4); text-align:center; width:100%; padding:20px 0;">${idx === 0 ? 'Addition column will appear here.' : 'No more columns to process.'}</div>`;
+  }
+
+  // Result
+  if (s.result.length > 0) {
+    renderLL('main-result', s.result, undefined, undefined, true);
+  } else {
+    document.getElementById('main-result').innerHTML = '<span style="font-family:var(--mono); font-size:12px; color:var(--ink-4)">none yet</span>';
+  }
+
+  // Log
+  document.getElementById('main-log').innerHTML = s.log;
+
+  // Step dot
+  document.getElementById('main-step-dot').textContent = `step ${idx} / ${MAIN_STEPS.length - 1}`;
+
+  // Buttons
+  document.getElementById('main-prev').disabled = idx === 0;
+  document.getElementById('main-next').disabled = idx === MAIN_STEPS.length - 1;
+}
+
+function mainNext() { if (mainStep < MAIN_STEPS.length - 1) { mainStep++; renderMainStep(mainStep); } }
+function mainPrev() { if (mainStep > 0) { mainStep--; renderMainStep(mainStep); } }
+function mainReset() { mainStep = 0; renderMainStep(0); }
+
+// ═══════════════════════════════════
+// EDGE CASE DEMO: [9,9,9] + [1]
+// ═══════════════════════════════════
+const EDGE_L1 = [9, 9, 9];
+const EDGE_L2 = [1];
+
+function buildEdgeSteps() {
+  const steps = [];
+  let carry = 0;
+  const result = [];
+  const l1 = [...EDGE_L1];
+  const l2 = [...EDGE_L2];
+
+  steps.push({
+    l1idx: 0, l2idx: 0, carry: 0, result: [],
+    log: `l1 = [9→9→9] (999), l2 = [1] (1). We expect 999 + 1 = <b>1000</b>, which in reverse is <b>[0→0→0→1]</b>.`
+  });
+
+  for (let i = 0; i < Math.max(l1.length, l2.length) || carry; i++) {
+    const v1 = i < l1.length ? l1[i] : 0;
+    const v2 = i < l2.length ? l2[i] : 0;
+    const total = v1 + v2 + carry;
+    const digit = total % 10;
+    const newCarry = Math.floor(total / 10);
+    result.push(digit);
+
+    const l1Active = i < l1.length ? i : -1;
+    const l2Active = i < l2.length ? i : -1;
+
+    const noMore = i >= l1.length - 1 && i >= l2.length - 1;
+    steps.push({
+      l1idx: l1Active, l2idx: l2Active, carry,
+      result: [...result],
+      log: noMore && v1 === 0 && v2 === 0
+        ? `Both lists are exhausted, but carry = <span style="color:var(--amber)">1</span>. <span class="eq">0 + 0 + 1 = 1</span>. We create one final node: <b>1</b>.`
+        : `<span class="eq">${v1} + ${v2}${carry ? ' + <span style="color:var(--amber)">' + carry + ' (carry)</span>' : ''} = ${total}</span>. Write <b>${digit}</b>${newCarry ? ', carry <span style="color:var(--amber)">1</span> forward.' : '.'}`
+    });
+    carry = newCarry;
+  }
+
+  steps.push({
+    l1idx: -1, l2idx: -1, carry: 0,
+    result: [...result], done: true,
+    log: `<span class="found">Done! [${result.join(' → ')}] = 1000. The carry created a 4th node even though both inputs were 3 nodes. ✓</span>`
+  });
+
+  return steps;
+}
+
+const EDGE_STEPS = buildEdgeSteps();
+let edgeStep = 0;
+
+function renderEdgeStep(idx) {
+  const s = EDGE_STEPS[idx];
+  renderLL('edge-l1', EDGE_L1, s.l1idx >= 0 && !s.done ? s.l1idx : undefined, s.l1idx >= 0 ? s.l1idx : EDGE_L1.length);
+  renderLL('edge-l2', EDGE_L2, s.l2idx >= 0 && !s.done ? s.l2idx : undefined, s.l2idx >= 0 ? s.l2idx : EDGE_L2.length);
+
+  const cb = document.getElementById('edge-carry-bubble');
+  cb.textContent = s.carry;
+  cb.className = 'carry-bubble' + (s.carry === 0 ? ' zero' : '');
+  document.getElementById('edge-carry-label').textContent = `carry = ${s.carry}`;
+
+  if (s.result.length > 0) {
+    renderLL('edge-result', s.result, undefined, undefined, true);
+  } else {
+    document.getElementById('edge-result').innerHTML = '<span style="font-family:var(--mono); font-size:12px; color:var(--ink-4)">none yet</span>';
+  }
+
+  document.getElementById('edge-log').innerHTML = s.log;
+  document.getElementById('edge-step-dot').textContent = `step ${idx} / ${EDGE_STEPS.length - 1}`;
+  document.getElementById('edge-prev').disabled = idx === 0;
+  document.getElementById('edge-next').disabled = idx === EDGE_STEPS.length - 1;
+}
+
+function edgeNext() { if (edgeStep < EDGE_STEPS.length - 1) { edgeStep++; renderEdgeStep(edgeStep); } }
+function edgePrev() { if (edgeStep > 0) { edgeStep--; renderEdgeStep(edgeStep); } }
+function edgeReset() { edgeStep = 0; renderEdgeStep(0); }
+
+// ═══════════════════════════════════
+// TRY IT
+// ═══════════════════════════════════
+function threeSum_addTwo(a, b) {
+  const result = [];
+  let carry = 0;
+  let i = 0;
+  while (i < a.length || i < b.length || carry) {
+    const v1 = i < a.length ? a[i] : 0;
+    const v2 = i < b.length ? b[i] : 0;
+    const total = v1 + v2 + carry;
+    result.push(total % 10);
+    carry = Math.floor(total / 10);
+    i++;
+  }
+  return result;
+}
+
+function runTry() {
+  const outEl = document.getElementById('try-out');
+  try {
+    const l1 = document.getElementById('t-l1').value.split(',').map(s => {
+      const n = parseInt(s.trim());
+      if (isNaN(n) || n < 0 || n > 9) throw new Error(`"${s.trim()}" is not a valid single digit`);
+      return n;
+    });
+    const l2 = document.getElementById('t-l2').value.split(',').map(s => {
+      const n = parseInt(s.trim());
+      if (isNaN(n) || n < 0 || n > 9) throw new Error(`"${s.trim()}" is not a valid single digit`);
+      return n;
+    });
+    const result = threeSum_addTwo(l1, l2);
+    const num1 = parseInt([...l1].reverse().join(''));
+    const num2 = parseInt([...l2].reverse().join(''));
+    const numRes = parseInt([...result].reverse().join(''));
+    outEl.innerHTML = `<div style="margin-bottom:8px; font-family:var(--sans); font-size:13px; color:var(--ink-4)">${num1} + ${num2} = ${numRes}</div><div class="res">result list: ${result.join(' → ')} → null</div>`;
+  } catch (e) {
+    outEl.innerHTML = `<span class="err">Error: ${e.message}. Enter single digits (0–9) separated by commas.</span>`;
+  }
+}
+
+document.getElementById('t-l1').addEventListener('keydown', e => { if (e.key === 'Enter') runTry(); });
+document.getElementById('t-l2').addEventListener('keydown', e => { if (e.key === 'Enter') runTry(); });
+
+// ═══════════════════════════════════
+// COPY CODE
+// ═══════════════════════════════════
+function copyCode() {
+  navigator.clipboard.writeText(document.getElementById('code-el').innerText).then(() => {
+    const btn = document.querySelector('.copy-btn');
+    btn.textContent = 'copied!';
+    setTimeout(() => btn.textContent = 'copy', 1500);
+  });
+}
+
+// ═══════════════════════════════════
+// INIT
+// ═══════════════════════════════════
+initSetup();
+renderMainStep(0);
+renderEdgeStep(0);
+</script>
+</body>
+</html>
